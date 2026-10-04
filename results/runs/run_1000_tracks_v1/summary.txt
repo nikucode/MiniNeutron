@@ -1,0 +1,177 @@
+
+=== MiniNeutron primary-track analysis ===
+
+Numero total de filas: 39904
+Numero de eventos: 1000
+Numero de tracks de neutron: 1000
+
+Filas correspondientes a neutrones primarios: 39904
+Tracks primarios: 1000
+
+Tracks primarios encontrados:
+     event  track_id  parent_id
+0        0         1          0
+4        1         1          0
+11       2         1          0
+15       3         1          0
+33       4         1          0
+38       5         1          0
+120      6         1          0
+124      7         1          0
+146      8         1          0
+174      9         1          0
+269     10         1          0
+277     11         1          0
+354     12         1          0
+366     13         1          0
+415     14         1          0
+503     15         1          0
+519     16         1          0
+561     17         1          0
+577     18         1          0
+583     19         1          0
+
+Numero total de colisiones hadElastic de primarios: 37142
+
+Promedio de colisiones por track primario: 37.142
+Mediana de colisiones: 17.0
+Minimo de colisiones: 0
+Maximo de colisiones: 375
+
+Estado final de los tracks primarios:
+                   volume  energy_after_MeV         process       step_status
+event track_id                                                               
+0     1             World      1.534470e+00  Transportation     WorldBoundary
+1     1             World      2.134080e-01  Transportation     WorldBoundary
+2     1             World      1.937750e+00  Transportation     WorldBoundary
+3     1             World      5.738780e-05  Transportation     WorldBoundary
+4     1             World      1.359670e+00  Transportation     WorldBoundary
+...                   ...               ...             ...               ...
+995   1         Moderator      0.000000e+00      nCaptureHP  PostStepDoItProc
+996   1             World      1.909590e+00  Transportation     WorldBoundary
+997   1             World      1.041610e-07  Transportation     WorldBoundary
+998   1             World      1.548030e-03  Transportation     WorldBoundary
+999   1             World      2.154120e-03  Transportation     WorldBoundary
+
+[1000 rows x 4 columns]
+
+Clasificacion final:
+                energy_after_MeV         process       step_status  outcome
+event track_id                                                             
+0     1             1.534470e+00  Transportation     WorldBoundary   ESCAPE
+1     1             2.134080e-01  Transportation     WorldBoundary   ESCAPE
+2     1             1.937750e+00  Transportation     WorldBoundary   ESCAPE
+3     1             5.738780e-05  Transportation     WorldBoundary   ESCAPE
+4     1             1.359670e+00  Transportation     WorldBoundary   ESCAPE
+...                          ...             ...               ...      ...
+995   1             0.000000e+00      nCaptureHP  PostStepDoItProc  CAPTURE
+996   1             1.909590e+00  Transportation     WorldBoundary   ESCAPE
+997   1             1.041610e-07  Transportation     WorldBoundary   ESCAPE
+998   1             1.548030e-03  Transportation     WorldBoundary   ESCAPE
+999   1             2.154120e-03  Transportation     WorldBoundary   ESCAPE
+
+[1000 rows x 4 columns]
+
+Resultados finales:
+outcome
+ESCAPE       758
+CAPTURE      240
+INELASTIC      2
+Name: count, dtype: int64
+
+Capturados: 240 (24.00 %)
+Terminacion por interaccion inelastica: 2 (0.20 %)
+Escaparon del mundo: 758 (75.80 %)
+Otros finales: 0 (0.00 %)
+
+Resumen de tracks primarios:
+                collisions  final_energy_MeV  ... final_step_status  outcome
+event track_id                                ...                           
+0     1                  1      1.534470e+00  ...     WorldBoundary   ESCAPE
+1     1                  4      2.134080e-01  ...     WorldBoundary   ESCAPE
+2     1                  1      1.937750e+00  ...     WorldBoundary   ESCAPE
+3     1                 15      5.738780e-05  ...     WorldBoundary   ESCAPE
+4     1                  2      1.359670e+00  ...     WorldBoundary   ESCAPE
+...                    ...               ...  ...               ...      ...
+995   1                 21      0.000000e+00  ...  PostStepDoItProc  CAPTURE
+996   1                  1      1.909590e+00  ...     WorldBoundary   ESCAPE
+997   1                 57      1.041610e-07  ...     WorldBoundary   ESCAPE
+998   1                  7      1.548030e-03  ...     WorldBoundary   ESCAPE
+999   1                 12      2.154120e-03  ...     WorldBoundary   ESCAPE
+
+[1000 rows x 5 columns]
+
+Tracks primarios sin colisiones hadElastic: 52
+                collisions  final_energy_MeV  ... final_step_status outcome
+event track_id                                ...                          
+44    1                  0               2.0  ...     WorldBoundary  ESCAPE
+53    1                  0               2.0  ...     WorldBoundary  ESCAPE
+68    1                  0               2.0  ...     WorldBoundary  ESCAPE
+87    1                  0               2.0  ...     WorldBoundary  ESCAPE
+100   1                  0               2.0  ...     WorldBoundary  ESCAPE
+107   1                  0               2.0  ...     WorldBoundary  ESCAPE
+110   1                  0               2.0  ...     WorldBoundary  ESCAPE
+113   1                  0               2.0  ...     WorldBoundary  ESCAPE
+165   1                  0               2.0  ...     WorldBoundary  ESCAPE
+170   1                  0               2.0  ...     WorldBoundary  ESCAPE
+174   1                  0               2.0  ...     WorldBoundary  ESCAPE
+189   1                  0               2.0  ...     WorldBoundary  ESCAPE
+194   1                  0               2.0  ...     WorldBoundary  ESCAPE
+204   1                  0               2.0  ...     WorldBoundary  ESCAPE
+208   1                  0               2.0  ...     WorldBoundary  ESCAPE
+221   1                  0               2.0  ...     WorldBoundary  ESCAPE
+226   1                  0               2.0  ...     WorldBoundary  ESCAPE
+251   1                  0               2.0  ...     WorldBoundary  ESCAPE
+260   1                  0               2.0  ...     WorldBoundary  ESCAPE
+262   1                  0               2.0  ...     WorldBoundary  ESCAPE
+266   1                  0               2.0  ...     WorldBoundary  ESCAPE
+290   1                  0               2.0  ...     WorldBoundary  ESCAPE
+300   1                  0               2.0  ...     WorldBoundary  ESCAPE
+315   1                  0               2.0  ...     WorldBoundary  ESCAPE
+332   1                  0               2.0  ...     WorldBoundary  ESCAPE
+360   1                  0               2.0  ...     WorldBoundary  ESCAPE
+399   1                  0               2.0  ...     WorldBoundary  ESCAPE
+405   1                  0               2.0  ...     WorldBoundary  ESCAPE
+420   1                  0               2.0  ...     WorldBoundary  ESCAPE
+434   1                  0               2.0  ...     WorldBoundary  ESCAPE
+453   1                  0               2.0  ...     WorldBoundary  ESCAPE
+496   1                  0               2.0  ...     WorldBoundary  ESCAPE
+517   1                  0               2.0  ...     WorldBoundary  ESCAPE
+521   1                  0               2.0  ...     WorldBoundary  ESCAPE
+522   1                  0               2.0  ...     WorldBoundary  ESCAPE
+535   1                  0               2.0  ...     WorldBoundary  ESCAPE
+599   1                  0               2.0  ...     WorldBoundary  ESCAPE
+608   1                  0               2.0  ...     WorldBoundary  ESCAPE
+682   1                  0               2.0  ...     WorldBoundary  ESCAPE
+752   1                  0               2.0  ...     WorldBoundary  ESCAPE
+772   1                  0               2.0  ...     WorldBoundary  ESCAPE
+806   1                  0               2.0  ...     WorldBoundary  ESCAPE
+815   1                  0               2.0  ...     WorldBoundary  ESCAPE
+850   1                  0               2.0  ...     WorldBoundary  ESCAPE
+853   1                  0               2.0  ...     WorldBoundary  ESCAPE
+883   1                  0               2.0  ...     WorldBoundary  ESCAPE
+912   1                  0               2.0  ...     WorldBoundary  ESCAPE
+914   1                  0               2.0  ...     WorldBoundary  ESCAPE
+965   1                  0               2.0  ...     WorldBoundary  ESCAPE
+972   1                  0               2.0  ...     WorldBoundary  ESCAPE
+993   1                  0               2.0  ...     WorldBoundary  ESCAPE
+994   1                  0               2.0  ...     WorldBoundary  ESCAPE
+
+[52 rows x 5 columns]
+
+Energia final media: 0.3417495780826885 MeV
+Mediana de energia final: 3.60496e-07 MeV
+
+Grafico guardado:
+../results/figures/primary_outcomes.png
+
+Grafico guardado:
+../results/figures/primary_collisions_vs_energy.png
+
+Grafico guardado:
+../results/figures/primary_final_energy_log.png
+
+Resumen guardado en:
+../results/primary_track_summary.csv
+
+Analisis de tracks primarios completado :3

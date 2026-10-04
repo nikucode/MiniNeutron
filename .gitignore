@@ -1,0 +1,58 @@
+# --------------------------------------------------
+# Build
+# --------------------------------------------------
+
+build/
+
+# --------------------------------------------------
+# Python environments and cache
+# --------------------------------------------------
+
+analysis/.venv/
+.venv/
+
+__pycache__/
+*.pyc
+
+# --------------------------------------------------
+# Generated simulation data
+# --------------------------------------------------
+
+*.csv
+*.root
+
+# Ignore generated Geant4 results by default
+results/*
+
+# Keep the runs directory accessible for exceptions
+!results/runs/
+
+# Ignore individual runs by default
+results/runs/*
+
+# Keep the validated reference run
+!results/runs/run_1000_tracks_v1/
+!results/runs/run_1000_tracks_v1/**
+
+# DAQ Bench v0.1 reference dataset
+!daq/data/simulated_adc.csv
+!daq/data/minineutron_daq.root
+
+# --------------------------------------------------
+# LaTeX temporary files
+# --------------------------------------------------
+
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+
+# --------------------------------------------------
+# Editor / system files
+# --------------------------------------------------
+
+.vscode/
+.DS_Store
