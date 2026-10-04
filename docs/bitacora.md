@@ -517,7 +517,7 @@ Resultados:
 Esta prueba confirmo que la nueva estructura permite distinguir de
 forma explicita entre captura y salida del mundo de simulacion. 
 
-## 4 de octubre de 2026 — Inicio de MiniNeutron DAQ Bench
+## 3 de octubre de 2026 — Inicio de MiniNeutron DAQ Bench
 
 ### Objetivo
 
@@ -614,10 +614,187 @@ ROOT generó:
 - `root_voltage_vs_time.png`
 - `minineutron_daq.root`
 
-### Estado actual
+### Estado del DAQ bench al 3 de octubre 
 
 El flujo DAQ v0.1 funciona de extremo a extremo:
 
 señal simulada → ADC simulado → CSV → análisis Python → análisis ROOT.
 
 El siguiente paso será definir el formato común para adquisición física y luego reemplazar la señal simulada por una entrada analógica real desde un microcontrolador.
+
+---
+
+## 4 de octubre de 2026 — DAQ Bench v0.2: señales pulsadas y reconstrucción de eventos
+
+### Objetivo
+
+Después de validar el flujo básico de adquisición con una señal sinusoidal, se comenzó una segunda versión del DAQ Bench orientada a señales pulsadas.
+
+El objetivo de esta etapa fue estudiar de forma simplificada conceptos como:
+
+- baseline;
+- ruido;
+- pulsos;
+- muestreo;
+- threshold;
+- trigger;
+- histéresis;
+- reconstrucción de eventos;
+- amplitud máxima.
+
+Esta etapa continúa utilizando señales completamente sintéticas y no representa todavía la respuesta física de un detector de neutrones.
+
+### Generación de señales pulsadas
+
+Se creó:
+
+`daq/simulate_pulses.py`
+
+El simulador genera una forma de onda compuesta por:
+
+- baseline de 0.5 V;
+- ruido gaussiano con sigma de 0.03 V;
+- pulsos gaussianos con posición, amplitud y ancho variables;
+- cuantización mediante un ADC ideal.
+
+Para la primera corrida se utilizaron:
+
+- duración: 10 s;
+- frecuencia de muestreo: 500 Hz;
+- muestras: 5000;
+- ADC: 10 bits;
+- Vref: 5 V;
+- 12 componentes de pulso generadas.
+
+La salida fue almacenada inicialmente en:
+
+`daq/data/simulated_pulses.csv`
+
+con las columnas:
+
+`sample,timestamp_s,adc_raw,voltage_V`
+
+### Análisis de la forma de onda
+
+Se creó:
+
+`daq/analyze_pulses.py`
+
+La señal obtenida presentó:
+
+- duración analizada: 9.998 s;
+- frecuencia estimada: 500.000 Hz;
+- voltaje medio: 0.6060 V;
+- desviación estándar: 0.3450 V;
+- voltaje mínimo: 0.3892 V;
+- voltaje máximo: 2.7877 V;
+- ADC medio: 124.00;
+- ADC mínimo: 80;
+- ADC máximo: 570.
+
+Se generó una visualización de la forma de onda completa para comprobar el baseline, el ruido y los pulsos.
+
+### Primer trigger por threshold
+
+Inicialmente se implementó un trigger simple detectando cruces ascendentes sobre:
+
+`0.80 V`
+
+La primera prueba detectó 12 cruces.
+
+Sin embargo, uno de ellos correspondía a un re-trigger cercano a la cola de un pulso, mostrando que un threshold simple puede interpretar ruido o pequeñas oscilaciones como eventos adicionales.
+
+### Prueba con dead time
+
+Se probó posteriormente un dead time fijo de:
+
+`0.150 s`
+
+Esta estrategia eliminó el re-trigger, pero redujo la cantidad de eventos aceptados a 10 y también eliminó una estructura cercana que podía corresponder a un pulso distinguible.
+
+Esto mostró que un dead time demasiado largo puede evitar re-triggers, pero también puede reducir la resolución temporal del sistema.
+
+### Trigger con histéresis
+
+Se reemplazó el dead time fijo por un sistema de trigger con histéresis.
+
+Se utilizaron:
+
+- trigger threshold: 0.80 V;
+- rearm threshold: 0.65 V.
+
+La lógica implementada es:
+
+`armed`
+`-> señal >= trigger`
+`-> abrir evento`
+`-> seguir la forma de onda`
+`-> señal <= rearm`
+`-> cerrar evento`
+`-> volver a armed`
+
+Esta estrategia evita volver a disparar el trigger mientras la señal no haya regresado suficientemente cerca del baseline.
+
+### Event builder
+
+El análisis se modificó para que cada evento permanezca abierto desde el trigger hasta que la señal cruza el nivel de rearme.
+
+Durante ese intervalo se registra el valor máximo observado.
+
+Para cada evento se almacenan:
+
+- `event_id`;
+- `trigger_time_s`;
+- `peak_time_s`;
+- `peak_voltage_V`;
+- `peak_adc`;
+- `end_time_s`;
+- `duration_s`.
+
+Los eventos reconstruidos se guardan en:
+
+`detected_events.csv`
+
+La primera corrida con trigger e histéresis produjo:
+
+`10 eventos reconstruidos`
+
+a partir de una forma de onda generada usando 12 componentes de pulso.
+
+Esto no se interpreta como una eficiencia física de 10/12.
+
+Los pulsos pueden superponerse y producir una única estructura continua por encima de los thresholds. Por lo tanto:
+
+`pulso generado != pico visible != evento reconstruido`
+
+Por ejemplo, uno de los eventos reconstruidos tuvo una duración de aproximadamente:
+
+`0.244 s`
+
+considerablemente mayor que varios de los demás eventos, debido a estructuras cercanas que permanecieron conectadas antes de que la señal bajara hasta el nivel de rearme.
+
+### Estado del DAQ Bench al 4 de octubre 
+
+La cadena implementada actualmente es:
+
+`señal sintética`
+`-> baseline + ruido + pulsos`
+`-> ADC simulado`
+`-> waveform CSV`
+`-> trigger`
+`-> histéresis`
+`-> event builder`
+`-> extracción de peak`
+`-> tabla de eventos`
+
+La corrida actual se conserva como referencia en:
+
+`daq/reference/v0.2/`
+
+Una mejora futura será guardar también la información original de cada pulso generado por el simulador para poder comparar:
+
+`ground truth`
+`-> waveform`
+`-> eventos reconstruidos`
+
+y estudiar formalmente superposición, pulsos perdidos y resolución temporal.

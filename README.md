@@ -169,7 +169,7 @@ ROOT reproduce la clasificación obtenida con Python para la corrida de referenc
 
 ---
 
-## MiniNeutron DAQ Bench v0.1
+## MiniNeutron DAQ Bench
 
 La primera prueba del DAQ Bench utiliza:
 
@@ -197,6 +197,29 @@ Resultados de referencia:
 Los resultados fueron analizados independientemente con Python y ROOT y fueron consistentes entre ambos pipelines.
 
 ---
+
+### DAQ de señales pulsadas v0.2
+
+También se implementó una segunda etapa del DAQ Bench utilizando señales pulsadas sintéticas.
+
+Actualmente incluye:
+
+- baseline y ruido gaussiano;
+- pulsos gaussianos sintéticos;
+- cuantización ADC;
+- threshold de trigger;
+- histéresis mediante un threshold separado de rearme;
+- reconstrucción de eventos;
+- timestamp de trigger y peak;
+- voltaje y valor ADC del peak;
+- duración del evento.
+
+La configuración de referencia utiliza un trigger de 0.80 V y un nivel de rearme de 0.65 V.
+
+Esta etapa está orientada al aprendizaje de conceptos de adquisición y no representa la respuesta de un detector de neutrones específico.
+
+---
+
 
 ## Estructura
 

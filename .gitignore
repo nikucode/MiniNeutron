@@ -30,13 +30,28 @@ results/*
 # Ignore individual runs by default
 results/runs/*
 
-# Keep the validated reference run
+# Keep the validated Geant4 reference run
 !results/runs/run_1000_tracks_v1/
 !results/runs/run_1000_tracks_v1/**
 
-# DAQ Bench v0.1 reference dataset
+# --------------------------------------------------
+# DAQ generated working data
+# --------------------------------------------------
+
+daq/data/*
+
+# Keep the DAQ Bench v0.1 reference files already used
 !daq/data/simulated_adc.csv
 !daq/data/minineutron_daq.root
+!daq/data/adc_histogram.png
+!daq/data/root_adc_histogram.png
+!daq/data/root_voltage_vs_time.png
+!daq/data/voltage_vs_time.png
+
+# Keep validated DAQ reference runs
+!daq/reference/
+!daq/reference/v0.2/
+!daq/reference/v0.2/**
 
 # --------------------------------------------------
 # LaTeX temporary files

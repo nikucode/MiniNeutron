@@ -1,0 +1,43 @@
+MiniNeutron DAQ Bench v0.2
+Reference pulsed-signal run
+
+Signal configuration
+--------------------
+Duration: 10 s
+Sampling rate: 500 Hz
+Samples: 5000
+Generated pulse parameters: 12
+Baseline: 0.5 V
+Noise sigma: 0.03 V
+ADC resolution: 10 bit
+Vref: 5 V
+
+Signal statistics
+-----------------
+Duration analyzed: 9.998 s
+Mean voltage: 0.6060 V
+Voltage standard deviation: 0.3450 V
+Minimum voltage: 0.3892 V
+Maximum voltage: 2.7877 V
+
+Mean ADC value: 124.00
+Minimum ADC value: 80
+Maximum ADC value: 570
+
+Event reconstruction
+--------------------
+Trigger threshold: 0.800 V
+Rearm threshold: 0.650 V
+Built events: 10
+
+The simulator generated 12 mathematical pulse components, but the
+trigger + hysteresis event builder reconstructed 10 events from the
+resulting waveform.
+
+This is expected to depend on pulse overlap, threshold configuration,
+noise, and the event-rearming condition. The number of generated pulse
+components should therefore not be interpreted as identical to the
+number of resolvable events.
+
+This run uses synthetic Gaussian pulses for DAQ learning and does not
+represent the response of a specific neutron detector.

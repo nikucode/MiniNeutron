@@ -67,6 +67,67 @@ Analizar con ROOT:
 
     root -l -b -q daq/root_adc_analysis.C
 
+Generar la señal pulsada:
+
+    python daq/simulate_pulses.py
+
+Analizar y reconstruir eventos:
+
+    python daq/analyze_pulses.py
+
+También es posible modificar los thresholds desde terminal:
+
+    python daq/analyze_pulses.py --trigger 0.80 --rearm 0.65
+
+## DAQ Bench v0.2 — Señales pulsadas
+
+La segunda versión introduce una forma de onda pulsada sintética para comenzar a estudiar lógica de trigger y reconstrucción de eventos.
+
+Se agregó:
+
+- `simulate_pulses.py`: generación de baseline, ruido y pulsos gaussianos sintéticos;
+- `analyze_pulses.py`: análisis de la waveform y reconstrucción de eventos.
+
+La corrida de referencia utiliza:
+
+- duración: 10 s;
+- frecuencia de muestreo: 500 Hz;
+- 5000 muestras;
+- baseline: 0.5 V;
+- ruido gaussiano: sigma = 0.03 V;
+- ADC: 10 bits;
+- Vref: 5 V;
+- 12 componentes de pulso generadas.
+
+La detección utiliza histéresis:
+
+- trigger: 0.80 V;
+- rearm: 0.65 V.
+
+Un evento comienza cuando la señal supera el threshold de trigger y termina cuando vuelve a bajar hasta el threshold de rearme.
+
+Mientras el evento está activo se registra el peak de la señal.
+
+Para cada evento se almacenan:
+
+- `event_id`;
+- `trigger_time_s`;
+- `peak_time_s`;
+- `peak_voltage_V`;
+- `peak_adc`;
+- `end_time_s`;
+- `duration_s`.
+
+En la corrida de referencia se reconstruyeron 10 eventos.
+
+El simulador había generado 12 componentes de pulso, pero este número no debe compararse directamente con la cantidad de eventos reconstruidos, ya que dos o más pulsos pueden superponerse y formar una única región continua para la lógica de trigger.
+
+La corrida se conserva en:
+
+`daq/reference/v0.2/`
+
+Esta simulación utiliza pulsos gaussianos artificiales con fines de aprendizaje y no representa la respuesta de un detector de neutrones específico.
+
 ## Próximos pasos
 
 - conectar una entrada analógica física;
