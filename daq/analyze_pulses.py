@@ -234,7 +234,10 @@ def main():
             "duration_s": duration
         })
 
-    events_df = pd.DataFrame(built_events)
+    events_df = pd.DataFrame(built_events, columns=[
+        "event_id", "trigger_time_s", "peak_time_s", "peak_voltage_V",
+        "peak_adc", "end_time_s", "duration_s"
+    ])
 
     n_events = len(events_df)
 

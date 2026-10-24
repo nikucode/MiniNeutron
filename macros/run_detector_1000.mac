@@ -1,0 +1,6 @@
+# MiniNeutron
+# Detector test - 1000 primary neutrons
+
+/run/initialize
+
+/run/beamOn 1000

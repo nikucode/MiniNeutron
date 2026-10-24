@@ -1,0 +1,48 @@
+{
+  "started_at": "2026-10-24T20:23:06.725568+00:00",
+  "input_hits": "build/detector_hits.csv",
+  "input_hits_sha256": "8a7834f61d49139e9bc367785359792b90b5fcfd302e072adb60d5300b05e14b",
+  "runner_sha256": "ec96ae9647960e69a178bda6df92cc9e3969dc05dfae09fd4054f544bbc304dc",
+  "seeds": [
+    12345,
+    12346,
+    12347
+  ],
+  "cases": {
+    "baseline": {},
+    "trigger_070": {
+      "trigger": 0.7
+    },
+    "trigger_100": {
+      "trigger": 1.0
+    },
+    "noise_000": {
+      "noise_sigma": 0.0
+    },
+    "noise_060": {
+      "noise_sigma": 0.06
+    },
+    "duration_5": {
+      "duration": 5.0
+    },
+    "duration_20": {
+      "duration": 20.0
+    }
+  },
+  "base_configuration": {
+    "gain": 1.0,
+    "duration": 10.0,
+    "rate": 500.0,
+    "baseline": 0.5,
+    "noise_sigma": 0.03,
+    "tau": 0.03,
+    "vref": 5.0,
+    "bits": 10,
+    "trigger": 0.8,
+    "rearm": 0.65,
+    "pre_window": 0.004
+  },
+  "method": "one factor at a time; temporal associations, not detector efficiency",
+  "summary_file": "daq_sensitivity_20261024.tsv",
+  "note": "Per-run manifests and waveform data are local ignored outputs; the TSV preserves the numeric summary."
+}

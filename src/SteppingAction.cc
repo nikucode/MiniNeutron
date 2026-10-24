@@ -69,15 +69,140 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
 {
     const auto* track = step->GetTrack();
 
+    const auto* preStep =
+        step->GetPreStepPoint();
+
+    const auto* postStep =
+        step->GetPostStepPoint();
+
 
     // ========================================================
-    // 1. FILTRAR SOLO NEUTRONES
+    // DETECTOR HIT RECORDING
     // ========================================================
 
-    // Por ahora MiniNeutron registra solamente tracks
-    // correspondientes a neutrones.
+    auto* currentVolume =
+        preStep
+        ->GetTouchableHandle()
+        ->GetVolume();
+
+    G4String currentVolumeName = "Outside";
+
+    if (currentVolume)
+    {
+        currentVolumeName =
+            currentVolume->GetName();
+    }
+
+
+    // Register energy deposited inside the virtual detector.
+    //
+    // IMPORTANT:
+    // This is evaluated for ALL particle types, not only neutrons,
+    // because secondary particles may carry and deposit energy
+    // inside the sensitive volume.
+
+    if (currentVolumeName == "Detector")
+    {
+        G4double energyDeposit =
+            step->GetTotalEnergyDeposit();
+
+        if (energyDeposit > 0.0)
+        {
+            const auto* event =
+                G4EventManager::GetEventManager()
+                ->GetConstCurrentEvent();
+
+            G4int eventID =
+                event
+                ? event->GetEventID()
+                : -1;
+
+            G4int trackID =
+                track->GetTrackID();
+
+            G4int parentID =
+                track->GetParentID();
+
+            G4String particleName =
+                track
+                ->GetParticleDefinition()
+                ->GetParticleName();
+
+            G4ThreeVector hitPosition =
+                preStep->GetPosition();
+
+            G4double globalTime =
+                preStep->GetGlobalTime();
+
+            G4String hitProcess = "None";
+
+            if (
+                postStep
+                ->GetProcessDefinedStep()
+            )
+            {
+                hitProcess =
+                    postStep
+                    ->GetProcessDefinedStep()
+                    ->GetProcessName();
+            }
+
+
+            static std::ofstream detectorFile(
+                "detector_hits.csv"
+            );
+
+            static bool detectorHeaderWritten =
+                false;
+
+            if (!detectorHeaderWritten)
+            {
+                detectorFile
+                    << "event,"
+                    << "track_id,"
+                    << "parent_id,"
+                    << "particle,"
+                    << "time_ns,"
+                    << "x_mm,"
+                    << "y_mm,"
+                    << "z_mm,"
+                    << "edep_MeV,"
+                    << "process"
+                    << G4endl;
+
+                detectorHeaderWritten = true;
+            }
+
+
+            detectorFile
+                << eventID << ","
+                << trackID << ","
+                << parentID << ","
+                << particleName << ","
+                << globalTime / ns << ","
+                << hitPosition.x() / mm << ","
+                << hitPosition.y() / mm << ","
+                << hitPosition.z() / mm << ","
+                << energyDeposit / MeV << ","
+                << hitProcess
+                << G4endl;
+        }
+    }
+
+
+    // ========================================================
+    // NEUTRON TRACK RECORDING
+    // ========================================================
+
+    // minineutron_steps.csv remains a neutron-only dataset.
+    //
+    // detector_hits.csv is independent and may contain
+    // energy deposition from secondary particles.
+
     if (
-        track->GetParticleDefinition()->GetParticleName()
+        track
+        ->GetParticleDefinition()
+        ->GetParticleName()
         != "neutron"
     )
     {
@@ -88,12 +213,6 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
     // ========================================================
     // 2. OBTENER LOS PUNTOS PRE Y POST STEP
     // ========================================================
-
-    const auto* preStep =
-        step->GetPreStepPoint();
-
-    const auto* postStep =
-        step->GetPostStepPoint();
 
 
     // ========================================================

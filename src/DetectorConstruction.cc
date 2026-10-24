@@ -17,6 +17,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
     auto* hdpe =
         nist->FindOrBuildMaterial("G4_POLYETHYLENE");
+
+    auto* detectorMaterial =
+        nist->FindOrBuildMaterial(
+            "G4_PLASTIC_SC_VINYLTOLUENE"
+        );
     
     G4double worldSize = 1.0 * m;
 
@@ -92,5 +97,60 @@ new G4PVPlacement(
     true
 );
 
-    return physWorld;
+
+// ============================================================
+// VIRTUAL DETECTOR
+// ============================================================
+
+// Simplified plastic-sensitive volume used for learning
+// detector response and energy-deposition analysis.
+//
+// This is not yet a calibrated model of a specific
+// neutron detector.
+
+G4double detectorX = 10.0 * cm;
+G4double detectorY = 10.0 * cm;
+G4double detectorZ = 2.0 * cm;
+
+auto* solidDetector =
+    new G4Box(
+        "Detector",
+        detectorX / 2,
+        detectorY / 2,
+        detectorZ / 2
+    );
+
+auto* logicDetector =
+    new G4LogicalVolume(
+        solidDetector,
+        detectorMaterial,
+        "Detector"
+    );
+
+auto* detectorVis =
+    new G4VisAttributes();
+
+detectorVis->SetVisibility(true);
+
+logicDetector->SetVisAttributes(
+    detectorVis
+);
+
+// Moderator ends at z = +5 cm.
+// Detector extends from z = +6 cm to +8 cm,
+// leaving a 1 cm gap.
+
+new G4PVPlacement(
+    nullptr,
+    G4ThreeVector(0, 0, 7.0 * cm),
+    logicDetector,
+    "Detector",
+    logicWorld,
+    false,
+    0,
+    true
+);
+
+
+return physWorld;
 }

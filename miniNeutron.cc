@@ -8,12 +8,22 @@
 #include "DetectorConstruction.hh"
 #include "ActionInitialization.hh"
 
+
 int main(int argc, char** argv)
 {
+    // ============================================================
+    // RUN MANAGER
+    // ============================================================
+
     auto* runManager =
         G4RunManagerFactory::CreateRunManager(
             G4RunManagerType::Serial
         );
+
+
+    // ============================================================
+    // USER INITIALIZATION
+    // ============================================================
 
     runManager->SetUserInitialization(
         new DetectorConstruction()
@@ -27,20 +37,65 @@ int main(int argc, char** argv)
         new ActionInitialization()
     );
 
-    auto* visManager = new G4VisExecutive;
-    visManager->Initialize();
-
-    auto* ui = new G4UIExecutive(argc, argv);
 
     auto* uiManager =
         G4UImanager::GetUIpointer();
 
-    uiManager->ApplyCommand("/run/initialize");
 
-    ui->SessionStart();
+    // ============================================================
+    // INTERACTIVE MODE
+    //
+    // ./minineutron
+    // ============================================================
 
-    delete ui;
-    delete visManager;
+    if (argc == 1)
+    {
+        auto* visManager =
+            new G4VisExecutive;
+
+        visManager->Initialize();
+
+        auto* ui =
+            new G4UIExecutive(
+                argc,
+                argv
+            );
+
+        uiManager->ApplyCommand(
+            "/run/initialize"
+        );
+
+        ui->SessionStart();
+
+        delete ui;
+        delete visManager;
+    }
+
+
+    // ============================================================
+    // BATCH MODE
+    //
+    // ./minineutron macro.mac
+    // ============================================================
+
+    else
+    {
+        G4String command =
+            "/control/execute ";
+
+        G4String macroFile =
+            argv[1];
+
+        uiManager->ApplyCommand(
+            command + macroFile
+        );
+    }
+
+
+    // ============================================================
+    // CLEANUP
+    // ============================================================
+
     delete runManager;
 
     return 0;

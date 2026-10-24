@@ -12,7 +12,8 @@ Actualmente MiniNeutron combina simulaciones en Geant4, análisis con Python y R
 
 ## Estado actual
 
-Actualmente están implementadas dos ramas principales:
+Actualmente están implementadas dos ramas principales y una integración
+experimental entre ellas:
 
 ### 1. Simulación y análisis de neutrones
 
@@ -70,7 +71,9 @@ Más información:
 La geometría actual contiene:
 
 - un mundo de aire de 1 m x 1 m x 1 m;
-- un bloque de polietileno de 20 cm x 20 cm x 10 cm.
+- un bloque de polietileno de 20 cm x 20 cm x 10 cm;
+- un detector virtual de plástico centellador de 10 cm x 10 cm x 2 cm,
+  situado entre z = 6 cm y z = 8 cm, tras una separación de aire de 1 cm.
 
 La fuente genera:
 
@@ -220,18 +223,81 @@ Esta etapa está orientada al aprendizaje de conceptos de adquisición y no repr
 
 ---
 
+### Integración Geant4 → señal → DAQ → comparación
+
+La etapa integrada parte de `build/detector_hits.csv`, generado al ejecutar
+Geant4 desde el directorio `build`:
+
+    cd build
+    ./minineutron ../macros/run_detector_1000.mac
+    cd ..
+
+Después se ejecuta, desde la raíz del proyecto:
+
+    python run_pipeline.py
+
+Cada ejecución crea un directorio en `results/pipeline_runs/` con un
+`manifest.json`, resúmenes de los depósitos, respuesta del detector, forma de
+onda, tabla de eventos reconstruidos y dos tablas de comparación. El pipeline
+analiza un CSV existente; no ejecuta Geant4 ni verifica cómo se generó ese CSV.
+El manifiesto registra los parámetros, la versión de Python y hashes SHA-256
+del CSV de entrada y los scripts del pipeline. Esos hashes permiten comparar
+archivos entre corridas, pero no registran todavía la configuración completa
+ni la semilla de la ejecución anterior de Geant4.
+Los resultados de trabajo se ignoran en Git por defecto.
+
+Por cada evento Geant4 con energía depositada en el detector, el modelo suma
+los depósitos de todos los tipos de partículas y calcula una amplitud mediante
+`A [V] = ganancia [V/MeV] × energía depositada [MeV]`. Se asigna un tiempo de
+fuente sintético, reproducible con `--seed`, y se añade el tiempo local del
+primer depósito Geant4 (ns convertidos a s). Cada evento se representa con un
+pulso exponencial de constante `--tau` en segundos. La señal suma los pulsos,
+baseline y ruido gaussiano, se limita a `[0, Vref]` y se cuantiza al ADC.
+
+El trigger de la DAQ utiliza actualmente `voltage_V`, antes de cuantización,
+con umbrales `--trigger` y `--rearm` en voltios. Por ello, cambiar `--bits` no
+cambia por sí solo qué eventos dispara este algoritmo. La comparación temporal
+usa `--pre-window` (4 ms por defecto): un pulso truth es candidato a un evento
+DAQ si su tiempo está entre `trigger_time_s - pre_window` y `end_time_s`,
+inclusive. Los truth se clasifican como `individual`, `merged`, `missed` o
+`ambiguous` si caen en más de una ventana. Una asociación temporal no demuestra
+qué pulso causó el trigger. Estas cifras tampoco son una eficiencia física de
+detección de neutrones.
+
+Para comprobar las pruebas automáticas disponibles:
+
+    python -m unittest discover -s tests -v
+
+El primer barrido reproducible de umbral, ruido y duración se ejecuta con
+`analysis/study_daq_sensitivity.py`. Su método, resultados y límites están en
+`docs/experiment_daq_sensitivity_2026-10-24.md`.
+
+Este modelo no incluye producción y transporte de luz, quenching, respuesta de
+fotodetector ni electrónica calibrada. La tasa de fuente, ganancia y ventana de
+asociación son hipótesis de estudio pendientes de validación.
+
+---
+
 
 ## Estructura
 
     MiniNeutron/
     ├── analysis/
+    │   ├── analyze_detector_hits.py
     │   ├── analyze_steps.py
+    │   ├── build_detector_waveform.py
+    │   ├── compare_truth_reco.py
+    │   ├── detector_response.py
+    │   ├── study_daq_sensitivity.py
+    │   ├── validate_data.py
     │   └── root_analysis.C
     │
     ├── daq/
     │   ├── analyze_adc.py
+    │   ├── analyze_pulses.py
     │   ├── root_adc_analysis.C
     │   ├── simulate_adc.py
+    │   ├── simulate_pulses.py
     │   ├── README.md
     │   └── data/
     │
@@ -244,7 +310,11 @@ Esta etapa está orientada al aprendizaje de conceptos de adquisición y no repr
     │   ├── PrimaryGeneratorAction.hh
     │   └── SteppingAction.hh
     │
+    ├── macros/
+    │   └── run_detector_1000.mac
+    │
     ├── results/
+    │   ├── pipeline_runs/ (salidas locales ignoradas por Git)
     │   └── runs/
     │       └── run_1000_tracks_v1/
     │
@@ -254,6 +324,8 @@ Esta etapa está orientada al aprendizaje de conceptos de adquisición y no repr
     │   ├── PrimaryGeneratorAction.cc
     │   └── SteppingAction.cc
     │
+    ├── tests/
+    ├── run_pipeline.py
     ├── CMakeLists.txt
     ├── miniNeutron.cc
     ├── requirements.txt
