@@ -48,3 +48,6 @@ semilla. No mide eficiencia física del detector ni establece qué depósito
 causó cada trigger. Falta repetir la comparación con varias semillas y
 resoluciones ADC, conservando las mismas formas de onda analógicas por par de
 modos y verificando las asociaciones evento a evento.
+
+Ese barrido posterior se documenta en
+`experiment_adc_trigger_sweep_2026-10-24.md`.

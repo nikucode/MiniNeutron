@@ -1,0 +1,13 @@
+seed	bits	n_truth	n_voltage	n_adc	voltage_only	adc_only	voltage_windows_overlapping_multiple_adc	adc_windows_overlapping_multiple_voltage	one_to_one_links	truth_status_changed	voltage_truth_individual	voltage_truth_merged	voltage_truth_missed	adc_truth_individual	adc_truth_merged	adc_truth_missed
+12345	4	82	21	17	0	0	0	3	14	13	13	18	51	7	31	44
+12345	6	82	21	21	0	0	0	0	21	0	13	18	51	13	18	51
+12345	8	82	21	23	0	2	0	0	21	2	13	18	51	15	18	49
+12345	10	82	21	21	0	1	0	1	19	2	13	18	51	13	19	50
+12346	4	82	21	19	2	0	0	0	19	19	16	11	55	9	28	45
+12346	6	82	21	19	2	0	0	0	19	2	16	11	55	14	11	57
+12346	8	82	21	21	0	0	0	0	21	0	16	11	55	16	11	55
+12346	10	82	21	21	0	0	0	0	21	2	16	11	55	15	13	54
+12347	4	82	19	18	0	0	0	1	17	8	12	18	52	8	26	48
+12347	6	82	19	19	0	0	0	0	19	1	12	18	52	12	17	53
+12347	8	82	19	19	0	0	0	0	19	0	12	18	52	12	18	52
+12347	10	82	19	19	0	0	0	0	19	0	12	18	52	12	18	52

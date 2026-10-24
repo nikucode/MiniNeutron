@@ -285,6 +285,9 @@ El análisis de contribuciones al trigger usa
 `docs/experiment_trigger_contributions_2026-10-24.md`.
 La comparación controlada entre triggers de voltaje y ADC está en
 `docs/experiment_adc_trigger_2026-10-24.md`.
+El barrido reproducible de tres semillas y cuatro resoluciones se ejecuta con
+`analysis/study_adc_trigger.py`; su método y resultados están en
+`docs/experiment_adc_trigger_sweep_2026-10-24.md`.
 
 Este modelo no incluye producción y transporte de luz, quenching, respuesta de
 fotodetector ni electrónica calibrada. La tasa de fuente, ganancia y ventana de
@@ -304,6 +307,7 @@ asociación son hipótesis de estudio pendientes de validación.
     │   ├── detector_response.py
     │   ├── diagnose_trigger_contributions.py
     │   ├── study_daq_sensitivity.py
+    │   ├── study_adc_trigger.py
     │   ├── study_trigger_contributions.py
     │   ├── validate_data.py
     │   └── root_analysis.C
