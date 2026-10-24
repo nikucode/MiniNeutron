@@ -84,10 +84,9 @@ como falsos positivos físicos ni como pulsos de ruido puro.
 - `merged`, `missed` y `sin candidato` dependen de una ventana de 4 ms aún no
   validada para una electrónica o detector específicos.
 
-## Próximo experimento
+## Continuación
 
-Conservar por muestra las contribuciones de pulsos y ruido, y estudiar las
-decisiones de trigger frente a contrafactuales controlados. Eso permitiría
-separar mejor cruces por un pulso aislado, superposición, ruido y colas previas.
-Después corresponde repetir el barrido con más semillas y evaluar sensibilidad
-a la ventana de asociación y al nivel de rearme.
+El [diagnóstico de contribuciones al trigger](experiment_trigger_contributions_2026-10-24.md)
+estudia los pulsos y el ruido en las muestras de disparo mediante dos
+contrafactuales controlados. Aún queda repetir el barrido con más semillas y
+evaluar sensibilidad a la ventana de asociación y al nivel de rearme.

@@ -79,6 +79,19 @@ También es posible modificar los thresholds desde terminal:
 
     python daq/analyze_pulses.py --trigger 0.80 --rearm 0.65
 
+El análisis usa `voltage_V` por defecto. Para aplicar la misma histéresis a
+los códigos digitalizados de `adc_raw`, se puede ejecutar:
+
+    python daq/analyze_pulses.py --trigger-source adc --trigger 0.80 --rearm 0.65 --vref 5 --bits 10
+
+Los umbrales se expresan en voltios y se convierten a códigos inclusivos:
+`adc_raw >= ceil(trigger/Vref × (2^bits−1))` abre el evento y
+`adc_raw <= floor(rearm/Vref × (2^bits−1))` lo cierra. En este modo,
+`peak_voltage_V` es el voltaje reconstruido desde `peak_adc`; no es la muestra
+analógica original. Se debe indicar el mismo `Vref` y número de bits que se
+utilizaron al generar el CSV. El pipeline integrado transmite esos parámetros
+automáticamente.
+
 ## DAQ Bench v0.2 — Señales pulsadas
 
 La segunda versión introduce una forma de onda pulsada sintética para comenzar a estudiar lógica de trigger y reconstrucción de eventos.

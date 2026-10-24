@@ -42,7 +42,7 @@ BASE_CONFIG = {
     "gain": 1.0, "duration": 10.0, "rate": 500.0,
     "baseline": 0.5, "noise_sigma": 0.03, "tau": 0.03,
     "vref": 5.0, "bits": 10, "trigger": 0.80,
-    "rearm": 0.65, "pre_window": 0.004,
+    "rearm": 0.65, "trigger_source": "voltage", "pre_window": 0.004,
 }
 
 

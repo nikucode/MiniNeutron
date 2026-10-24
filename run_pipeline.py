@@ -45,6 +45,8 @@ def parse_args():
     parser.add_argument("--seed", type=int, default=12345)
     parser.add_argument("--trigger", type=float, default=0.80)
     parser.add_argument("--rearm", type=float, default=0.65)
+    parser.add_argument("--trigger-source", choices=("voltage", "adc"),
+                        default="voltage")
     parser.add_argument("--pre-window", type=float, default=0.004,
                         help="Truth association window before trigger, in seconds")
     args = parser.parse_args()
@@ -105,6 +107,7 @@ def main():
             for key in (
                 "gain", "duration", "rate", "baseline", "noise_sigma",
                 "tau", "vref", "bits", "seed", "trigger", "rearm",
+                "trigger_source",
                 "pre_window"
             )
         },
@@ -171,6 +174,9 @@ def main():
                 "--output-dir", str(run_dir / "daq"),
                 "--trigger", str(args.trigger),
                 "--rearm", str(args.rearm),
+                "--trigger-source", args.trigger_source,
+                "--vref", str(args.vref),
+                "--bits", str(args.bits),
             ],
         ),
         (

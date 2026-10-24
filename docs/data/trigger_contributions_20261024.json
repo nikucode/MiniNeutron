@@ -1,0 +1,8 @@
+{
+  "source_summary": "results/parameter_studies/20261024_truth_reco_v1/summary.csv",
+  "source_summary_sha256": "d9529bfe1831bc592f882d1419c9f857c564c8d02c843d0a7c0d6f2e2eb930a0",
+  "diagnostic_script_sha256": "d276d62ebf05d3c7f3a637930bac478fc95306273b93f619dd9530301b99ba62",
+  "method": "Two complete DAQ counterfactual runs per source run, plus sample diagnostics",
+  "summary_file": "trigger_contributions_20261024.tsv",
+  "note": "Raw per-run waveforms and counterfactual DAQ outputs are local ignored artifacts; regenerate them with the study scripts."
+}

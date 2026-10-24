@@ -254,9 +254,18 @@ primer depósito Geant4 (ns convertidos a s). Cada evento se representa con un
 pulso exponencial de constante `--tau` en segundos. La señal suma los pulsos,
 baseline y ruido gaussiano, se limita a `[0, Vref]` y se cuantiza al ADC.
 
-El trigger de la DAQ utiliza actualmente `voltage_V`, antes de cuantización,
-con umbrales `--trigger` y `--rearm` en voltios. Por ello, cambiar `--bits` no
-cambia por sí solo qué eventos dispara este algoritmo. La comparación temporal
+Por defecto, el trigger de la DAQ utiliza `voltage_V`, antes de cuantización,
+con umbrales `--trigger` y `--rearm` en voltios. Con
+`--trigger-source adc` utiliza `adc_raw`: el trigger exige un código mayor o
+igual a `ceil(trigger/Vref × (2^bits−1))` y el rearme uno menor o igual a
+`floor(rearm/Vref × (2^bits−1))`. En este modo, `peak_voltage_V` se reconstruye
+desde el código ADC y representa un valor cuantizado. La configuración elegida
+queda en el manifiesto y en la tabla de eventos. Ejemplo:
+
+    python run_pipeline.py --trigger-source adc --bits 10 --vref 5
+
+En el modo por defecto, cambiar `--bits` no cambia por sí solo qué eventos
+dispara el algoritmo. La comparación temporal
 usa `--pre-window` (4 ms por defecto): un pulso truth es candidato a un evento
 DAQ si su tiempo está entre `trigger_time_s - pre_window` y `end_time_s`,
 inclusive. Los truth se clasifican como `individual`, `merged`, `missed` o
@@ -271,6 +280,11 @@ Para comprobar las pruebas automáticas disponibles:
 El primer barrido reproducible de umbral, ruido y duración se ejecuta con
 `analysis/study_daq_sensitivity.py`. Su método, resultados y límites están en
 `docs/experiment_daq_sensitivity_2026-10-24.md`.
+El análisis de contribuciones al trigger usa
+`analysis/study_trigger_contributions.py` y está documentado en
+`docs/experiment_trigger_contributions_2026-10-24.md`.
+La comparación controlada entre triggers de voltaje y ADC está en
+`docs/experiment_adc_trigger_2026-10-24.md`.
 
 Este modelo no incluye producción y transporte de luz, quenching, respuesta de
 fotodetector ni electrónica calibrada. La tasa de fuente, ganancia y ventana de
@@ -288,7 +302,9 @@ asociación son hipótesis de estudio pendientes de validación.
     │   ├── build_detector_waveform.py
     │   ├── compare_truth_reco.py
     │   ├── detector_response.py
+    │   ├── diagnose_trigger_contributions.py
     │   ├── study_daq_sensitivity.py
+    │   ├── study_trigger_contributions.py
     │   ├── validate_data.py
     │   └── root_analysis.C
     │

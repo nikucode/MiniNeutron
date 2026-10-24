@@ -1,4 +1,6 @@
 import argparse
+import math
+from decimal import Decimal, ROUND_CEILING, ROUND_FLOOR
 from pathlib import Path
 
 import pandas as pd
@@ -7,6 +9,29 @@ import matplotlib
 matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
+
+
+def adc_threshold_codes(trigger_v, rearm_v, vref, bits):
+    """Convert voltage thresholds to inclusive integer ADC comparisons.
+
+    Trigger uses ``adc_raw >= ceil(trigger/Vref * ADCmax)``. Rearm uses
+    ``adc_raw <= floor(rearm/Vref * ADCmax)``. Decimal arithmetic avoids
+    moving an exact code boundary by one count due to binary float rounding.
+    """
+    if bits < 1 or bits > 24 or not math.isfinite(vref) or vref <= 0:
+        raise ValueError("bits must be 1–24 and Vref must be positive")
+    if not all(map(math.isfinite, (trigger_v, rearm_v))):
+        raise ValueError("thresholds must be finite")
+    if rearm_v < 0 or rearm_v >= trigger_v:
+        raise ValueError("thresholds must satisfy 0 <= rearm < trigger")
+    scale = Decimal(2 ** bits - 1) / Decimal(str(vref))
+    trigger_code = int((Decimal(str(trigger_v)) * scale).to_integral_value(
+        rounding=ROUND_CEILING
+    ))
+    rearm_code = int((Decimal(str(rearm_v)) * scale).to_integral_value(
+        rounding=ROUND_FLOOR
+    ))
+    return trigger_code, rearm_code
 
 
 def main():
@@ -37,6 +62,12 @@ def main():
         default=0.65,
         help="Rearm threshold in volts"
     )
+    parser.add_argument(
+        "--trigger-source", choices=("voltage", "adc"), default="voltage",
+        help="Use sampled analog voltage or quantized ADC counts for DAQ decisions"
+    )
+    parser.add_argument("--vref", type=float, default=5.0)
+    parser.add_argument("--bits", type=int, default=10)
 
     args = parser.parse_args()
 
@@ -76,10 +107,33 @@ def main():
     trigger_threshold_V = args.trigger
     rearm_threshold_V = args.rearm
 
-    if rearm_threshold_V >= trigger_threshold_V:
-        raise ValueError(
-            "Rearm threshold must be lower than trigger threshold."
-        )
+    trigger_code, rearm_code = adc_threshold_codes(
+        trigger_threshold_V, rearm_threshold_V, args.vref, args.bits
+    )
+    adc_maximum = 2 ** args.bits - 1
+    if args.trigger_source == "adc":
+        adc_values = pd.to_numeric(df["adc_raw"], errors="coerce")
+        if (not adc_values.map(math.isfinite).all()
+                or (adc_values % 1 != 0).any()
+                or ((adc_values < 0) | (adc_values > adc_maximum)).any()):
+            raise ValueError("ADC samples must be integer codes within range")
+        df["daq_signal"] = adc_values.astype(int)
+        df["plot_signal_V"] = df["daq_signal"] * args.vref / adc_maximum
+        trigger_level = trigger_code
+        rearm_level = rearm_code
+        plot_trigger_V = trigger_code * args.vref / adc_maximum
+        plot_rearm_V = rearm_code * args.vref / adc_maximum
+    else:
+        df["daq_signal"] = df["voltage_V"]
+        df["plot_signal_V"] = df["voltage_V"]
+        trigger_level = trigger_threshold_V
+        rearm_level = rearm_threshold_V
+        plot_trigger_V = trigger_threshold_V
+        plot_rearm_V = rearm_threshold_V
+
+    def peak_voltage(level):
+        return (level * args.vref / adc_maximum
+                if args.trigger_source == "adc" else level)
 
     # --------------------------------------------------
     # Basic signal statistics
@@ -134,13 +188,13 @@ def main():
     trigger_time = None
 
     peak_index = None
-    peak_voltage = None
+    peak_level = None
 
     for index, row in df.iterrows():
-        voltage = row["voltage_V"]
+        level = row["daq_signal"]
 
         # Start a new event
-        if armed and voltage >= trigger_threshold_V:
+        if armed and level >= trigger_level:
             event_id += 1
 
             armed = False
@@ -150,19 +204,19 @@ def main():
             trigger_time = row["timestamp_s"]
 
             peak_index = index
-            peak_voltage = voltage
+            peak_level = level
 
         # Track the pulse maximum while the event is active
         if event_active:
-            if voltage > peak_voltage:
-                peak_voltage = voltage
+            if level > peak_level:
+                peak_level = level
                 peak_index = index
 
             # Close the event once the signal falls below
             # the rearm threshold
             if (
                 index > trigger_index
-                and voltage <= rearm_threshold_V
+                and level <= rearm_level
             ):
                 peak_time = df.loc[
                     peak_index,
@@ -185,10 +239,11 @@ def main():
                     "event_id": event_id,
                     "trigger_time_s": trigger_time,
                     "peak_time_s": peak_time,
-                    "peak_voltage_V": peak_voltage,
+                    "peak_voltage_V": peak_voltage(peak_level),
                     "peak_adc": peak_adc,
                     "end_time_s": end_time,
-                    "duration_s": duration
+                    "duration_s": duration,
+                    "trigger_source": args.trigger_source,
                 })
 
                 event_active = False
@@ -197,7 +252,7 @@ def main():
                 trigger_index = None
                 trigger_time = None
                 peak_index = None
-                peak_voltage = None
+                peak_level = None
 
     # --------------------------------------------------
     # Handle an event that remains active at the end
@@ -228,15 +283,16 @@ def main():
             "event_id": event_id,
             "trigger_time_s": trigger_time,
             "peak_time_s": peak_time,
-            "peak_voltage_V": peak_voltage,
+            "peak_voltage_V": peak_voltage(peak_level),
             "peak_adc": peak_adc,
             "end_time_s": end_time,
-            "duration_s": duration
+            "duration_s": duration,
+            "trigger_source": args.trigger_source,
         })
 
     events_df = pd.DataFrame(built_events, columns=[
         "event_id", "trigger_time_s", "peak_time_s", "peak_voltage_V",
-        "peak_adc", "end_time_s", "duration_s"
+        "peak_adc", "end_time_s", "duration_s", "trigger_source"
     ])
 
     n_events = len(events_df)
@@ -291,6 +347,7 @@ def main():
     print()
 
     print("Trigger configuration")
+    print(f"source: {args.trigger_source}")
     print(
         f"trigger threshold: "
         f"{trigger_threshold_V:.3f} V"
@@ -299,6 +356,10 @@ def main():
         f"rearm threshold: "
         f"{rearm_threshold_V:.3f} V"
     )
+    if args.trigger_source == "adc":
+        print(f"ADC: {args.bits} bits, Vref = {args.vref:.3f} V")
+        print(f"trigger code: >= {trigger_code} ({plot_trigger_V:.6f} V)")
+        print(f"rearm code: <= {rearm_code} ({plot_rearm_V:.6f} V)")
     print(
         f"built events: "
         f"{n_events}"
@@ -325,30 +386,29 @@ def main():
         figsize=(12, 5)
     )
 
-    # Full digitized waveform
+    # Show the voltage actually used by the selected trigger mode.
     plt.plot(
         df["timestamp_s"],
-        df["voltage_V"],
-        label="Signal"
+        df["plot_signal_V"],
+        label=("ADC reconstructed signal" if args.trigger_source == "adc"
+               else "Signal")
     )
 
     # Trigger threshold
     plt.axhline(
-        trigger_threshold_V,
+        plot_trigger_V,
         linestyle="--",
         label=(
-            f"Trigger = "
-            f"{trigger_threshold_V:.2f} V"
+            f"Trigger = {plot_trigger_V:.3f} V"
         )
     )
 
     # Rearm threshold
     plt.axhline(
-        rearm_threshold_V,
+        plot_rearm_V,
         linestyle=":",
         label=(
-            f"Rearm = "
-            f"{rearm_threshold_V:.2f} V"
+            f"Rearm = {plot_rearm_V:.3f} V"
         )
     )
 
@@ -367,7 +427,7 @@ def main():
             ].iloc[0]
 
             trigger_voltages.append(
-                trigger_row["voltage_V"]
+                trigger_row["plot_signal_V"]
             )
 
         plt.scatter(
