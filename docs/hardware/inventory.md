@@ -62,3 +62,5 @@ externo de la guía basándose en ese componente.
 El formato y análisis ya implementados pueden reutilizarse para señales de un
 trimmer o LDR. Faltan la selección final de placa, el circuito adaptado y las
 mediciones físicas; no se presentan como etapas realizadas.
+
+Guía siguiente: [primer experimento con el trimmer](first_trimmer_experiment.md).

@@ -1,0 +1,60 @@
+{
+  "source": "synthetic",
+  "samples": 3000,
+  "events": 1,
+  "trigger_s": 3.0,
+  "rearm_s": 5.0,
+  "plateaus": [
+    {
+      "plateau": 0,
+      "fraction": 0.1,
+      "ideal_V": 0.5,
+      "adc_code": 102,
+      "reconstructed_V": 0.4985337243401758,
+      "scale_error_mV": -1.4662756598242122
+    },
+    {
+      "plateau": 1,
+      "fraction": 0.3,
+      "ideal_V": 1.5,
+      "adc_code": 307,
+      "reconstructed_V": 1.5004887585532747,
+      "scale_error_mV": 0.4887585532746819
+    },
+    {
+      "plateau": 2,
+      "fraction": 0.5,
+      "ideal_V": 2.5,
+      "adc_code": 512,
+      "reconstructed_V": 2.5024437927663734,
+      "scale_error_mV": 2.4437927663734094
+    },
+    {
+      "plateau": 3,
+      "fraction": 0.7,
+      "ideal_V": 3.5,
+      "adc_code": 716,
+      "reconstructed_V": 3.4995112414467253,
+      "scale_error_mV": -0.4887585532746819
+    },
+    {
+      "plateau": 4,
+      "fraction": 0.9,
+      "ideal_V": 4.5,
+      "adc_code": 921,
+      "reconstructed_V": 4.501466275659824,
+      "scale_error_mV": 1.4662756598236015
+    },
+    {
+      "plateau": 5,
+      "fraction": 0.1,
+      "ideal_V": 0.5,
+      "adc_code": 102,
+      "reconstructed_V": 0.4985337243401758,
+      "scale_error_mV": -1.4662756598242122
+    }
+  ],
+  "raw_sha256": "6036216d3205084b142c74cb1fad3ce1ae5552ac275a3e140fd21a76b2ba1ea5",
+  "script_sha256": "58e58661247dac1e4ffea8c456127dac2af6816386fd916f8eb8426c246efb42",
+  "limitations": "Ideal endpoint scaling; no loading, ADC calibration, noise or hardware measurements"
+}

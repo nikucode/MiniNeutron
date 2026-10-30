@@ -78,6 +78,7 @@ python -m daq.optical_bench study --output-dir results/optical_study_001
 python -m unittest discover -s tests -v
 ```
 
+- [Primer experimento con el trimmer disponible](docs/hardware/first_trimmer_experiment.md).
 - [Guía de montaje, soldadura, captura y límites](docs/hardware/optical_bench.md).
 - [Estudio de 18 configuraciones y resultados](docs/experiment_optical_bench_2026-10-30.md).
 - [Registro de construcción pendiente](docs/hardware/build_record_template.md).
