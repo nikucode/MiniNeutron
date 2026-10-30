@@ -1,0 +1,36 @@
+test_inclusive_code_boundaries (test_analyze_pulses.TestADCTrigger.test_inclusive_code_boundaries) ... ok
+test_quantization_changes_trigger_decision_and_peak_value (test_analyze_pulses.TestADCTrigger.test_quantization_changes_trigger_decision_and_peak_value) ... ok
+test_empty_event_csv_keeps_columns (test_analyze_pulses.TestNoTriggerOutput.test_empty_event_csv_keeps_columns) ... ok
+test_empty_reconstruction_keeps_output_schema (test_compare_truth_reco.TestTemporalAssociation.test_empty_reconstruction_keeps_output_schema) ... ok
+test_individual_merged_missed_and_unmatched (test_compare_truth_reco.TestTemporalAssociation.test_individual_merged_missed_and_unmatched) ... ok
+test_negative_window_and_duplicate_ids_are_rejected (test_compare_truth_reco.TestTemporalAssociation.test_negative_window_and_duplicate_ids_are_rejected) ... ok
+test_overlap_is_ambiguous_instead_of_last_reco_wins (test_compare_truth_reco.TestTemporalAssociation.test_overlap_is_ambiguous_instead_of_last_reco_wins) ... ok
+test_inconsistent_waveform_is_rejected (test_diagnose_trigger_contributions.TestTriggerSampleDiagnosis.test_inconsistent_waveform_is_rejected) ... ok
+test_no_reconstruction_keeps_diagnostic_columns (test_diagnose_trigger_contributions.TestTriggerSampleDiagnosis.test_no_reconstruction_keeps_diagnostic_columns) ... ok
+test_tail_and_noise_cross_threshold_without_temporal_candidate (test_diagnose_trigger_contributions.TestTriggerSampleDiagnosis.test_tail_and_noise_cross_threshold_without_temporal_candidate) ... ok
+test_invalid_matching_inputs (test_optical_bench.TestEdgeMatching.test_invalid_matching_inputs) ... ok
+test_no_detection_has_no_invented_timing (test_optical_bench.TestEdgeMatching.test_no_detection_has_no_invented_timing) ... ok
+test_one_to_one_and_unmatched (test_optical_bench.TestEdgeMatching.test_one_to_one_and_unmatched) ... ok
+test_clean_fixture_uses_existing_adc_trigger (test_optical_bench.TestOpticalIntegration.test_clean_fixture_uses_existing_adc_trigger) ... ok
+test_no_trigger_and_recording_boundaries (test_optical_bench.TestOpticalIntegration.test_no_trigger_and_recording_boundaries) ... ok
+test_provenance_and_thresholds_required (test_optical_bench.TestOpticalIntegration.test_provenance_and_thresholds_required) ... ok
+test_bad_streams_fail_instead_of_repairing (test_optical_bench.TestOpticalProtocol.test_bad_streams_fail_instead_of_repairing) ... ok
+test_invalid_noise_rejected (test_optical_bench.TestOpticalProtocol.test_invalid_noise_rejected) ... ok
+test_synthetic_stream_is_reproducible (test_optical_bench.TestOpticalProtocol.test_synthetic_stream_is_reproducible) ... ok
+test_timestamp_rollover_and_sequence_gaps (test_optical_bench.TestOpticalProtocol.test_timestamp_rollover_and_sequence_gaps) ... ok
+test_fragmented_reads_and_exact_row_count (test_optical_bench.TestSerialCapture.test_fragmented_reads_and_exact_row_count) ... ok
+test_timeout_keeps_partial_bytes (test_optical_bench.TestSerialCapture.test_timeout_keeps_partial_bytes) ... ok
+test_unexpected_header_fails (test_optical_bench.TestSerialCapture.test_unexpected_header_fails) ... ok
+test_scheduler_wrap_backpressure_and_stop (test_optical_firmware.TestFirmwareHost.test_scheduler_wrap_backpressure_and_stop) ... ok
+test_merger_and_adc_only_window_are_visible (test_study_adc_trigger.TestADCStudy.test_merger_and_adc_only_window_are_visible) ... ok
+test_quantization_matches_round_to_nearest_even (test_study_adc_trigger.TestADCStudy.test_quantization_matches_round_to_nearest_even) ... ok
+test_adc_out_of_range (test_validate_data.TestPulseCSVValidation.test_adc_out_of_range) ... ok
+test_missing_column (test_validate_data.TestPulseCSVValidation.test_missing_column) ... ok
+test_non_numeric_value (test_validate_data.TestPulseCSVValidation.test_non_numeric_value) ... ok
+test_repeated_timestamp (test_validate_data.TestPulseCSVValidation.test_repeated_timestamp) ... ok
+test_valid_data (test_validate_data.TestPulseCSVValidation.test_valid_data) ... ok
+
+----------------------------------------------------------------------
+Ran 31 tests in 7.893s
+
+OK

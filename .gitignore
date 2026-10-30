@@ -71,3 +71,5 @@ daq/data/*
 
 .vscode/
 .DS_Store
+# Compact, explicitly synthetic optical study evidence
+!docs/experiments/optical_bench_2026-10-30/summary.csv

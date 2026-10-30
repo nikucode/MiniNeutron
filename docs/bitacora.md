@@ -798,3 +798,17 @@ Una mejora futura será guardar también la información original de cada pulso 
 `-> eventos reconstruidos`
 
 y estudiar formalmente superposición, pulsos perdidos y resolución temporal.
+
+## 2026-10-30 — Extensión óptica y preparación de hardware
+
+Se incorporaron importación de streams ópticos, captura serial opcional y firmware
+de referencia Uno R3. La reconstrucción usa el trigger ADC existente. Se documentó
+montaje en protoboard, transferencia a placa perforada, soldadura y pruebas.
+
+Se ejecutaron 18 configuraciones sintéticas y 31 pruebas automáticas, todas aprobadas.
+La lógica del firmware se comprobó en host C++; compilación AVR y hardware pendientes.
+El pipeline previo también terminó sobre el CSV local existente (639 filas, 82 eventos
+con depósito, 5000 muestras y 21 reconstruidos en modo ADC). No se regeneró Geant4.
+
+Método, resultados y límites: [informe](experiment_optical_bench_2026-10-30.md).
+Desarrollo asistido por IA; aún se requiere revisión/aprendizaje del autor y montaje real.

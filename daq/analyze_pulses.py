@@ -451,7 +451,7 @@ def main():
 
     plt.title(
         "MiniNeutron DAQ Bench - "
-        "Simulated Pulsed Signal"
+        "Sampled Pulsed Signal"
     )
 
     plt.legend()

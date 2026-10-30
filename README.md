@@ -66,6 +66,22 @@ Más información:
 
 ---
 
+## Banco óptico: puente hacia hardware
+
+La DAQ ahora incluye un banco óptico de referencia, con firmware para Uno R3,
+captura serial, validación de tiempos y secuencias, y análisis con el trigger ADC
+existente. **El software se probó con datos sintéticos; el circuito y la soldadura
+están pendientes de implementación física.** No es un controlador de chopper.
+
+```sh
+python -m daq.optical_bench study --output-dir results/optical_study_001
+python -m unittest discover -s tests -v
+```
+
+- [Guía de montaje, soldadura, captura y límites](docs/hardware/optical_bench.md).
+- [Estudio de 18 configuraciones y resultados](docs/experiment_optical_bench_2026-10-30.md).
+- [Registro de construcción pendiente](docs/hardware/build_record_template.md).
+
 ## Simulación Geant4
 
 La geometría actual contiene:

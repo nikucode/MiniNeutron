@@ -148,3 +148,14 @@ Esta simulación utiliza pulsos gaussianos artificiales con fines de aprendizaje
 - mantener un formato compatible con Python y ROOT;
 - incorporar señales pulsadas, ruido, umbral y detección de eventos;
 - explorar acondicionamiento analógico y adquisición de señales reales.
+
+## Extensión óptica de referencia
+
+El importador `python -m daq.optical_bench` transforma streams de secuencia,
+`micros()` y ADC al esquema común. `python -m daq.capture_serial` prepara
+la captura USB con pySerial (dependencia opcional). El origen se etiqueta
+explícitamente como `synthetic` o `hardware`. El trigger se ejecuta offline.
+
+Ver la [guía de montaje y soldadura](../docs/hardware/optical_bench.md) y el
+[estudio sintético](../docs/experiment_optical_bench_2026-10-30.md). El firmware
+está preparado para revisión y pruebas en Uno R3; aún no se ha validado en placa.
