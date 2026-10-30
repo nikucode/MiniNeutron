@@ -4,8 +4,10 @@
 
 **Diseño de referencia y software de desarrollo. No construido ni validado físicamente.**
 Arduino Uno R3 se usa como referencia porque existe experiencia previa del autor
-con esa placa; el inventario disponible y el modelo de fototransistor aún deben
-confirmarse. No se asume compatibilidad eléctrica directa con Teensy o con el servo.
+con esa placa, pero **no está confirmada como disponible**. Se recuperó el
+[inventario histórico](inventory.md): herramientas de soldadura, multímetro y
+componentes, entre ellos trimmer y LDR. La placa de adquisición y un fototransistor
+externo siguen pendientes. Podemos empezar por el trimmer al conseguir la placa. No se asume compatibilidad eléctrica directa con Teensy o con el servo.
 
 El objetivo es detectar interrupciones de luz, conservar sus muestras ADC y
 estudiar detección de eventos y errores temporales. Añade una entrada óptica a
