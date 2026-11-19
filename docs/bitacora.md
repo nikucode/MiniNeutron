@@ -838,3 +838,24 @@ Método y resultados:
 [experimento de reconstrucción temporal](experiment_waveform_timing_2026-11-19.md).
 Desarrollo asistido por Codex; pendiente revisión explicada y reproducción por
 Alex antes de atribuir dominio personal completo.
+
+## 2026-11-19 — Barrido pareado de fracción CFD
+
+A partir de la revisión conceptual del estudio temporal, Alex propuso estudiar
+conjuntamente *time walk* y jitter sin elegir anticipadamente una fracción CFD
+ganadora. Se implementó un barrido de 0,2 a 0,8 donde cada fracción analiza
+exactamente las mismas formas de onda.
+
+Se generaron 27.000 señales sintéticas y 189.000 estimaciones. El resumen entre
+cinco semillas conserva *time walk*, jitter medio, peor jitter y cruces
+encontrados. Se identificaron configuraciones dominadas sin crear una
+puntuación ponderada arbitraria.
+
+No apareció una fracción universal: con 30 mV, 0,4–0,5 formaron el compromiso
+no dominado en las tres frecuencias; con 10 mV, 0,2–0,3 resultaron favorables
+en este modelo. Los resultados no son una optimización de hardware real.
+
+Método, resultados y límites:
+[barrido de fracción CFD](experiment_cfd_fraction_2026-11-19.md).
+Desarrollo asistido por Codex; pendiente reproducción y revisión personal de
+Alex.

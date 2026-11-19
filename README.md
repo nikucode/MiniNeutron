@@ -77,8 +77,10 @@ repositorio. El estudio de MiniNeutron utiliza señales propias y no constituye
 una validación experimental.
 
 - [Método, resultados, procedencia y límites](docs/experiment_waveform_timing_2026-11-19.md).
+- [Barrido pareado de siete fracciones CFD](docs/experiment_cfd_fraction_2026-11-19.md).
 - Código: `analysis/waveform_features.py` y
-  `analysis/study_waveform_timing.py`.
+  `analysis/study_waveform_timing.py`; extensión en
+  `analysis/study_cfd_fraction.py`.
 
 ---
 
@@ -324,6 +326,9 @@ El barrido reproducible de tres semillas y cuatro resoluciones se ejecuta con
 El estudio controlado de tiempo del máximo, umbral fijo y CFD se ejecuta con
 `analysis/study_waveform_timing.py` y está documentado en
 `docs/experiment_waveform_timing_2026-11-19.md`.
+El barrido pareado de siete fracciones CFD se ejecuta con
+`analysis/study_cfd_fraction.py` y está documentado en
+`docs/experiment_cfd_fraction_2026-11-19.md`.
 
 Este modelo no incluye producción y transporte de luz, quenching, respuesta de
 fotodetector ni electrónica calibrada. La tasa de fuente, ganancia y ventana de
@@ -344,6 +349,7 @@ asociación son hipótesis de estudio pendientes de validación.
     │   ├── diagnose_trigger_contributions.py
     │   ├── study_daq_sensitivity.py
     │   ├── study_adc_trigger.py
+    │   ├── study_cfd_fraction.py
     │   ├── study_trigger_contributions.py
     │   ├── study_waveform_timing.py
     │   ├── validate_data.py
