@@ -812,3 +812,29 @@ con depósito, 5000 muestras y 21 reconstruidos en modo ADC). No se regeneró Ge
 
 Método, resultados y límites: [informe](experiment_optical_bench_2026-10-30.md).
 Desarrollo asistido por IA; aún se requiere revisión/aprendizaje del autor y montaje real.
+
+## 2026-11-19 — Caracterización temporal independiente de formas de onda
+
+La revisión educativa previa de registros DRS4 permitió reconocer problemas de
+línea base, ruido, saturación y definición temporal. Para transferir ese
+aprendizaje sin incorporar datos ni código externos, se creó un estudio nuevo
+basado exclusivamente en señales sintéticas de MiniNeutron con `truth`
+conocido.
+
+Se implementó un núcleo reutilizable que calcula baseline, ruido, amplitud,
+áreas, saturación y cruces temporales interpolados. El experimento compara
+tiempo del máximo, umbral fijo y CFD simplificado para tres amplitudes, tres
+niveles de ruido, tres frecuencias de muestreo y cinco semillas. Se generaron
+27.000 formas de onda y 81.000 estimaciones, con configuración y resumen
+reproducibles. La variación entre semillas permitió distinguir resultados
+estables de diferencias marginales de una realización particular.
+
+En el barrido controlado, el CFD mostró menor dependencia media con la amplitud
+que el umbral fijo. Esto no demuestra superioridad universal: el resultado
+depende de la forma de pulso y parámetros sintéticos elegidos. No se utilizaron
+registros DRS4 ni se realizó calibración experimental.
+
+Método y resultados:
+[experimento de reconstrucción temporal](experiment_waveform_timing_2026-11-19.md).
+Desarrollo asistido por Codex; pendiente revisión explicada y reproducción por
+Alex antes de atribuir dominio personal completo.

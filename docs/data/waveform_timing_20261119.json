@@ -1,0 +1,41 @@
+{
+  "scope": "synthetic MiniNeutron timing study; not DRS4 analysis or calibration",
+  "seeds": [
+    20261119,
+    20261120,
+    20261121,
+    20261122,
+    20261123
+  ],
+  "trials_per_configuration": 200,
+  "amplitudes_v": [
+    0.2,
+    0.5,
+    1.0
+  ],
+  "noise_sigma_v": [
+    0.0,
+    0.01,
+    0.03
+  ],
+  "rates_hz": [
+    500.0,
+    1000.0,
+    2000.0
+  ],
+  "settings": {
+    "duration_s": 0.2,
+    "nominal_onset_s": 0.06,
+    "baseline_duration_s": 0.04,
+    "baseline_v": 0.5,
+    "rise_s": 0.006,
+    "decay_s": 0.03,
+    "vref_v": 3.3,
+    "adc_bits": 12,
+    "threshold_v": 0.1,
+    "cfd_fraction": 0.5
+  },
+  "script_sha256": "46c26f7a3a1020af4962b7e6a97eb1c675f5ca8df2a156bf5efa401f7c47fabd",
+  "feature_module_sha256": "74d49b063117ceae50dd06768877a482d90c4e43e0e441af892158d1ac5e0e6c",
+  "interpretation": "latency is relative to synthetic pulse onset; time_walk is the range of mean latency across amplitudes at fixed rate/noise"
+}
